@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     user: "root",
 
     // Your password
-    password: "",
+    password: "password",
     database: "bamazon"
 });
 
@@ -30,15 +30,11 @@ function display() {
         console.log("Find below our Products List");
         console.log("");
 
-        var table = new Table({
-            head: ["Product Id", "Product Description", "Cost"],
-            colWidths: [12, 50, 8],
-            colAligns: ["center", "left", "right"],
-            style: {
-                head: ["aqua"],
-                compact: true
-                // 'padding-right' : 1,
-            }
-        })
+        for (var i = 0; i < res.length; i++) {
+            console.log([res[i].item_id, res[i].product_name, res[i].price]);
+        }
+
+        console.log("");
+        //shopping();
     })
 };
