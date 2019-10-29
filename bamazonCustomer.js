@@ -40,20 +40,42 @@ function display() {
 };
 
 function shopping() {
-        inquirer
-            .prompt({
-                name: "productToBuy",
-                type: "input",
-                message: "Please enter the item Id of the product you wish to purchase!"
-            })
-            .then(function (answer1) {
-                    var selection = answer1.productToBuy;
-                    connection.query("SELECT * FROM products WHERE Id=?", selection, function (
-                                err,
-                                res
-                            ) {
-                                if (err) throw err;
-                                if (res.length === 0) {
-                                    console.log(
-                                        "That product doesn't exist, please enter an item Id from the list above."
-                                    );
+    inquirer
+        .prompt({
+            name: "productToBuy",
+            type: "input",
+            message: "Please enter the item Id of the product you wish to purchase!"
+        })
+        .then(function (answer1) {
+                var selection = answer1.productToBuy;
+                connection.query("SELECT * FROM products WHERE Id=?", selection, function (
+                            err,
+                            res
+                        ) {
+                            if (err) throw err;
+                            if (res.length === 0) {
+                                console.log(
+                                    "That product doesn't exist, please enter an item Id from the list above."
+                                );
+                                shopping();
+                            } else {
+                                inquirer
+                                    .prompt({
+                                        name: "quantity",
+                                        type: "input",
+                                        message: "How many items woul you like to purchase?"
+                                    })
+                                    .then(function (answer2) {
+                                            var quantity = answer2.quantity;
+                                            if (quantity > res[0].stock_quantity) {
+                                                console.log(
+                                                    "Our Apologies we only have " +
+                                                    res[0].stock_quantity +
+                                                    " items of the product selected"
+                                                );
+                                                shopping();
+                                            } else {
+                                                console.log("");
+                                                console.log(res[0].product_name + " purchased");
+                                                console.log(quantity + " qty @ $" + res[0].price);
+                                            
