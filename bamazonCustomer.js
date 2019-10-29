@@ -35,6 +35,25 @@ function display() {
         }
 
         console.log("");
-        //shopping();
+        shopping();
     })
 };
+
+function shopping() {
+        inquirer
+            .prompt({
+                name: "productToBuy",
+                type: "input",
+                message: "Please enter the item Id of the product you wish to purchase!"
+            })
+            .then(function (answer1) {
+                    var selection = answer1.productToBuy;
+                    connection.query("SELECT * FROM products WHERE Id=?", selection, function (
+                                err,
+                                res
+                            ) {
+                                if (err) throw err;
+                                if (res.length === 0) {
+                                    console.log(
+                                        "That product doesn't exist, please enter an item Id from the list above."
+                                    );
